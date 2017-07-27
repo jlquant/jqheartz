@@ -1,0 +1,39 @@
+{
+  "player": [
+    {
+      "id": 1,
+      "name": "Zim",
+      "hand": [],
+      "trick_pile": [],
+      "score": 0,
+      "won": 0
+    },
+    {
+      "id": 2,
+      "name": "Dib",
+      "hand": [],
+      "trick_pile": [],
+      "score": 0,
+      "won": 0
+    },
+    {
+      "id": 3,
+      "name": "Gaz",
+      "hand": [],
+      "trick_pile": [],
+      "score": 0,
+      "won": 4
+    },
+    {
+      "id": 4,
+      "name": "Gir",
+      "hand": [],
+      "trick_pile": [],
+      "score": 0,
+      "won": 1
+    }
+  ],
+  "deck": null,
+  "tricks": [],
+  "next_up": null,
+}
