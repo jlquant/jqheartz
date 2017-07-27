@@ -43,4 +43,29 @@ class HeartsMgr(object):
         if self.cache['deck'] is None:
             self.cache['deck'] = create_poker_deck()
 
+    def new_game(self):
+        # Reset player
+        for player in self.cache['player']:
+            player['points'] = 0
+            player['hand'][:] = [] # In place clear
+            player['trick_pile'][:] = [] # In place clear
 
+        # Reset deck
+        self.cache['deck'] = create_poker_deck()
+
+        # Shuffle deck
+        random.shuffle(self.cache['deck'])
+
+        # Deal cards
+        while self.cache['deck']:
+            for player in self.cache['player']: # Assume cards divide evenly
+                player['hand'].append(self.cache['deck'].pop(0))
+
+        # SKIP CARD PASSING FOR EXAMPLE SIMPLICITY
+
+        # Find start player
+        for player in self.cache['player']:
+            if any(card['suit'] == 'clubs' and card['rank'] == 2 for card in player['hand']):
+                self.cache['next_up'] = {
+                    '$href': '#/player/%d' % player['id']
+                }
