@@ -35,6 +35,8 @@ def create_poker_deck():
 class HeartsMgr(object):
     def __init__(self):
         self.cache = {}
+        self._trick = {}
+        self._suit_led = None
 
     def initialize(self, hearts_json='hearts.json'):
         with open(hearts_json, 'r') as fil:
@@ -69,3 +71,45 @@ class HeartsMgr(object):
                 self.cache['next_up'] = {
                     '$href': '#/player/%d' % player['id']
                 }
+
+    def play_card(self, player_idx, card_idx):
+        player_name = self.cache['player']['name']
+        card = self.cache['player'][player_idx]['hand'].pop(card_idx)
+
+        # First card played?
+        if self._suit_led is None:
+            print player_name, "leads with the", card['name']
+            self._suit_led = card['suit']
+        else:
+            print player_name, "plays the", card['name']
+
+        # Play card
+        self._trick.append({
+            'owner_id': self.cache['player'][player_idx]['id'],
+            'card': card,
+        })
+
+        # Last card played?
+        if len(self._trick) == len(self.cache['player']):
+            self.determine_trick_winner()
+
+        # Find next player
+        next_player_idx = player_idx + 1
+        if len(self.cache['player'] == next_player_idx):
+            next_player_idx = 0
+
+
+    def determine_trick_winner(self):
+        winner = None
+        for player, card in self._trick.iteritems():
+            if card['suit'] != self._suit_led:
+                # Didn't win for sure
+                pass
+            elif winner is None:
+                winner = player
+            elif card['rank'] > self._trick[winner]['rank']:
+                winner = player
+            else:
+                # Not higher
+                pass
+
